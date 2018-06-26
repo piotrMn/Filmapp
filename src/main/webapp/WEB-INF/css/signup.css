@@ -1,0 +1,28 @@
+@charset "UTF-8";
+
+*{
+	background-color: #c0c0c0;
+	font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+	font-size: 16px;
+	line-height: 1.5;
+}
+.myButton{
+	background-color: #3a3a3a;
+	color: white;
+}
+::placeholder{
+	color: #3f3f3f;
+}
+.signup{
+	width: 90%;
+	padding: 20px;
+}
+.names{
+	width: 150px;
+}
+.values input[type="text"] {
+    height: 2em;
+}
+.values input[type="password"] {
+    height: 2em;
+}

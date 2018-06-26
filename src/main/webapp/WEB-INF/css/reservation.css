@@ -1,0 +1,50 @@
+@charset "UTF-8";
+
+.hide{
+	display: none;
+}
+
+*{
+	background-color: background-color:#8e8e8e !important;
+	color:black;
+}
+
+.free{
+	background-color: white;
+}
+
+.free:hover {
+	cursor: pointer;
+}
+
+.booked{
+	background-color: LightGray ;
+}
+
+.booked:hover{
+	cursor: default;
+}
+
+.booked-before{
+	background-color: LightGray ;
+
+}
+
+.booked-before:hover{
+	cursor: default;
+}
+
+#seats-table{
+	table-layout: fixed;
+	width: 60%;
+	margin: 0 auto;
+}
+
+#seats-table td{
+	width: 30px;
+	height: 40px;
+	text-align: center;
+	
+}
+
+

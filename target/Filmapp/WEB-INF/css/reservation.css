@@ -1,0 +1,10 @@
+@charset "UTF-8";
+
+.hide{
+	display: none;
+}
+
+*{
+	background-color: background-color:#8e8e8e !important;
+	color:black;
+}
