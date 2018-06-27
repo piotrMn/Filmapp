@@ -6,16 +6,16 @@ $(function() {
 		dayNamesMin : [ 'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat' ],
 	});
 
+	//wyświetlenie max 10 wyników wyszukiwania
 	var resultRows = $(".result-row");
 	for (let i = 0; i < resultRows.length; i++) {
 		if (i > 10) {
 			resultRows.eq(i).hide();
 		}
 	}
-	
+	//przewijanie do przodu wyników wyszukiwania
 	$("#next-btn").click(function() {
 		var rows = $(".result-row").length;
-		console.log(rows);
 		var firstVisIndex = $("tr.result-row:visible").first().data("row");
 		var lastVisIndex = $("tr.result-row:visible").last().data("row");
 		if (rows == lastVisIndex) {
@@ -34,7 +34,7 @@ $(function() {
 			}
 		}
 	})
-
+	//przewijanie do tyłu wyników wyszukiwania
 	$("#prev-btn").click(function() {
 		var rows = $(".result-row").length;
 		var firstVisIndex = $("tr.result-row:visible").first().data("row");
@@ -57,7 +57,7 @@ $(function() {
 			}
 		}
 	})
-
+	//obsługa przycisków menu głównego
 	$("#past-btn").click(function() {
 		$(".menu-items").not("#past-res").hide();
 		$("#past-res").toggle();
@@ -97,6 +97,22 @@ $(function() {
 		var title = $(event.target).parent().parent().children().eq(1).text();
 		$("#title-select").val(title);
 		$("#title-select").change();
+	})
+	
+	$(".topnav-btns").click(function() {
+		if($("#search-results").css("display") == "none"){
+			$("#back-to-searchresults").show();
+		}
+	})
+	
+	$("#back-to-searchresults-btn").click(function() {
+		$(".menu-items").not("#search-results").hide();
+		$("#search-results").show();
+		$("#back-to-searchresults").hide();
+	})
+	
+	$(".topnav-btns").on("click", function(event) {
+		event.preventDefault();
 	})
 	
 });

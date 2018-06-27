@@ -43,15 +43,6 @@
 	cursor: pointer;
 }
 
-.topnav a.active {
-	background-color: #3a3a3a;
-	color: white;
-}
-
-.topnav a.active:hover {
-	cursor: progress;
-}
-
 #upcoming-res {
 	width: 100%;
 }
@@ -168,4 +159,9 @@ input[type=submit] {
 
 a.rep-book:hover{
 	text-decoration: none;
+}
+
+#back-to-searchresults{
+	width: 100%;
+	margin-left: 200px;
 }

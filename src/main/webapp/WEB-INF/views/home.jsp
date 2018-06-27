@@ -40,9 +40,9 @@
 		<div class="topnav">
 			<c:url var="home" value="http://localhost:8080/Filmapp/session/clean"/>
 			<a href="${home }" id="main-btn">Strona główna</a> 
-			<a href="#" id="rep-btn">Repertuar</a> 
-			<a href="#" id="contact-btn">Kontakt</a> 
-			<a href="#" id="about-btn">O nas</a>
+			<a href="#" id="rep-btn" class="topnav-btns">Repertuar</a> 
+			<a href="#" id="contact-btn" class="topnav-btns">Kontakt</a> 
+			<a href="#" id="about-btn" class="topnav-btns">O nas</a>
 			<c:if test="${empty username }">
 				<c:url var="signup" value="http://localhost:8080/Filmapp/user/signup" />
 				<a href="${signup}">Zarejestruj się</a>
@@ -104,6 +104,11 @@
 					<button>Powrót do wyników szukania</button>
 				</div>
 			</form:form>
+			<div id="back-to-searchresults" class="hide">
+				<c:if test="${not empty searchresults && searchresults != 'emptylist' && searchresults != 'noquery' }">
+					<button id="back-to-searchresults-btn">Powrót do wyników wyszukiwania</button>
+				</c:if>
+			</div>
 		</div>
 		<!--  repertuar -->
 		<div id="repertoire" class="hide menu-items">

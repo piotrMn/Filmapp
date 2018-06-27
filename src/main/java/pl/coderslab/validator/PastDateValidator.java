@@ -8,12 +8,9 @@ import java.util.Date;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
-import pl.coderslab.util.Converter;
-
 public class PastDateValidator implements ConstraintValidator<PastDate, String> {
 	
 	public void initialize(PastDate constraintAnnotation) {
-		// TODO Auto-generated method stub
 	}
 
 	public boolean isValid(String dateString, ConstraintValidatorContext context) {
@@ -21,7 +18,6 @@ public class PastDateValidator implements ConstraintValidator<PastDate, String> 
 			return true;
 		}
 		String dateStringTrimmed = dateString.trim();
-//		String dateReversed = Converter.reverseDate(dateStringTrimmed);
 		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yy HH:mm:ss");
 		Date thisDate = null;
 		try {
