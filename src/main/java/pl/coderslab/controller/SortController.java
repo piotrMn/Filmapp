@@ -36,7 +36,7 @@ public class SortController {
 			List<Screening> searchresults = new ArrayList<>();
 			for(int i = 0; i < screeningIdsRaw.length; i++) {
 				long id = Long.parseLong(screeningIdsRaw[i]);
-				Screening scr = screeningDao.findById(id);
+				Screening scr = screeningDao.findScreeningById(id);
 				searchresults.add(scr);
 			}
 			TimestampComparator timestampComparator = new TimestampComparator();
@@ -66,7 +66,7 @@ public class SortController {
 			List<Screening> searchresults = new ArrayList<>();
 			for(int i = 0; i < screeningIdsRaw.length; i++) {
 				long id = Long.parseLong(screeningIdsRaw[i]);
-				Screening scr = screeningDao.findById(id);
+				Screening scr = screeningDao.findScreeningById(id);
 				searchresults.add(scr);
 			}
 			TimestampComparator timestampComparator = new TimestampComparator();
@@ -96,7 +96,7 @@ public class SortController {
 			List<Screening> searchresults = new ArrayList<>();
 			for(int i = 0; i < screeningIdsRaw.length; i++) {
 				long id = Long.parseLong(screeningIdsRaw[i]);
-				Screening scr = screeningDao.findById(id);
+				Screening scr = screeningDao.findScreeningById(id);
 				searchresults.add(scr);
 			}
 			TimestampComparator timestampComparator = new TimestampComparator();

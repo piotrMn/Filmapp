@@ -27,29 +27,25 @@ public class CinemaDao {
 	public void update(Cinema entity) {
 		entityManager.merge(entity);
 	}
-	
-	public List<Cinema> getAll(){
+
+	public List<Cinema> findAllCinemas() {
 		Query query = entityManager.createQuery("SELECT c FROM Cinema c");
 		return query.getResultList();
 	}
-	
-	
 
-	public Cinema findByName(String name) {
+	public Cinema findCinemaByName(String cinemaName) {
 		Cinema theCinema;
-		Query query = entityManager.createQuery("SELECT c FROM Cinema c WHERE c.name=:name");
-		query.setParameter("name", name);
+		Query query = entityManager.createQuery("SELECT c FROM Cinema c WHERE c.name=:cinemaName");
+		query.setParameter("cinemaName", cinemaName);
 		try {
 			theCinema = (Cinema) query.getSingleResult();
-		} catch (NoResultException e) {
-			theCinema = null;
-		} catch (NonUniqueResultException f) {
+		} catch (NoResultException exc) {
 			theCinema = null;
 		}
 		return theCinema;
 	}
 
-	public List<Cinema> findByTown(String town) {
+	public List<Cinema> findCinemasByTown(String town) {
 		Query query = entityManager.createQuery("SELECT c FROM Cinema c WHERE c.town=:town");
 		query.setParameter("town", town);
 		return query.getResultList();

@@ -40,7 +40,6 @@ public class ReservationController {
 	
 	@Autowired
 	ScreeningDao screeningDao;
-
 	
 	@RequestMapping("/form")
 	public String addReservation(@RequestParam String screeningId, @RequestParam String username, Model model, HttpServletRequest request) {
@@ -53,9 +52,9 @@ public class ReservationController {
 		} catch (NumberFormatException e) {
 			return "redirect:/";
 		}
-		Screening screening = screeningDao.findById(id);
+		Screening screening = screeningDao.findScreeningById(id);
 		if(screening != null) {
-			List<Reservation> reservations = reservationDao.getByScreeningId(id);
+			List<Reservation> reservations = reservationDao.findReservationByScreeningId(id);
 			String seatCodes = "";
 			for(Reservation res : reservations) {
 				seatCodes += res.getSeatCodes();
@@ -78,7 +77,7 @@ public class ReservationController {
 		} catch (NumberFormatException e) {
 			return "redirect:/reserve/form";
 		}
-		Screening screening = screeningDao.findById(scrId);
+		Screening screening = screeningDao.findScreeningById(scrId);
 		if(screening.getBooked() + numberOfSeatsParsed > screening.getCinema().getCapacity()) {
 			model.addAttribute("error", "noseats");
 			model.addAttribute("screening", screening);
@@ -92,7 +91,7 @@ public class ReservationController {
 		res.setCancelled(false);
 		res.getURS().add(urs);
 		res.setResNumber(ReservationUtil.generateNumber());
-		User user = userDao.findByUsername(username);
+		User user = userDao.findUserByUsername(username);
 		user.getURS().add(urs);
 		userDao.update(user);
 		screening.setBooked(screening.getBooked() + numberOfSeatsParsed);
@@ -125,15 +124,13 @@ public class ReservationController {
 		} catch(NumberFormatException e) {
 			return "home";
 		}
-		User user = userDao.findById(userId);
+		User user = userDao.findUserById(userId);
 		session.setAttribute("loggedUsername", user.getUsername());
 		URSlink thisUrsLink = ursDao.findByReservationId(resId);
 		Reservation res = thisUrsLink.getReservation();
 		res.setCancelled(true);
-//		resDao.update(res);
 		Screening scr = thisUrsLink.getScreening();
 		scr.setBooked(scr.getBooked() - res.getNrOfSeats());
-//		scrDao.update(scr);
 		ursDao.update(thisUrsLink);
 		return "redirect:/";
 	}

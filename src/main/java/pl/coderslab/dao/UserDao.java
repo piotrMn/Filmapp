@@ -30,34 +30,36 @@ public class UserDao {
 	public void update(User entity) {
 		entityManager.merge(entity);
 	}
-	
+
 	public void delete(User entity) {
 		entityManager.remove(entityManager.contains(entity) ? entity : entityManager.merge(entity));
 	}
-	
-	public User findById(long id) {
-		User theUser;
-		Query query = entityManager.createQuery("SELECT u FROM User u WHERE u.id=:id");
-		query.setParameter("id", id);
+
+	public User findUserById(long userId) {
+		User theUser = null;
+		Query query = entityManager.createQuery("SELECT u FROM User u WHERE u.id=:userId");
+		query.setParameter("userId", userId);
 		try {
 			theUser = (User) query.getSingleResult();
-		} catch (NoResultException e) {
+		} catch (NoResultException exc) {
 			theUser = null;
 		}
 		return theUser;
 	}
-	public User findByUsername(String username) {
-		User theUser;
+
+	public User findUserByUsername(String username) {
+		User theUser = null;
 		Query query = entityManager.createQuery("SELECT u FROM User u WHERE u.username=:username");
 		query.setParameter("username", username);
 		try {
 			theUser = (User) query.getSingleResult();
-		} catch (NoResultException e) {
+		} catch (NoResultException exc) {
 			theUser = null;
 		}
 		return theUser;
 	}
-	public List<User> getAll(){
+
+	public List<User> findAllUsers() {
 		Query query = entityManager.createQuery("SELECT u FROM User u");
 		return query.getResultList();
 	}

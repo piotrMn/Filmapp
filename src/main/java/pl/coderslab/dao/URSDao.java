@@ -45,23 +45,26 @@ public class URSDao {
 		}
 		return thisURSlink;
 	}
-	public List<URSlink> findByUserIdUpcoming(long id) {
+	
+	public List<URSlink> findUpcomingByUserId(long userId) {
 		Timestamp now = Timestamp.valueOf(LocalDateTime.now());
-		Query query = entityManager.createQuery("SELECT urs FROM URSlink urs JOIN urs.user u JOIN urs.reservation r JOIN urs.screening s WHERE u.id=:id AND s.timestamp>:ts AND r.cancelled=FALSE");
-		query.setParameter("id", id);
-		query.setParameter("ts", now, TemporalType.TIMESTAMP);
+		Query query = entityManager.createQuery("SELECT urs FROM URSlink urs JOIN urs.user u JOIN urs.reservation r JOIN urs.screening s WHERE u.id=:userId AND s.timestamp>:now AND r.cancelled=FALSE");
+		query.setParameter("userId", userId);
+		query.setParameter("now", now, TemporalType.TIMESTAMP);
 		return query.getResultList();
 	}
-	public List<URSlink> findByUserIdPast(long id) {
+	
+	public List<URSlink> findPastByUserId(long userId) {
 		Timestamp now = Timestamp.valueOf(LocalDateTime.now());
-		Query query = entityManager.createQuery("SELECT urs FROM URSlink urs JOIN urs.user u JOIN urs.reservation r JOIN urs.screening s WHERE u.id=:id AND s.timestamp<:ts");
-		query.setParameter("id", id);
-		query.setParameter("ts", now, TemporalType.TIMESTAMP);
+		Query query = entityManager.createQuery("SELECT urs FROM URSlink urs JOIN urs.user u JOIN urs.reservation r JOIN urs.screening s WHERE u.id=:userId AND s.timestamp<:now");
+		query.setParameter("userId", userId);
+		query.setParameter("now", now, TemporalType.TIMESTAMP);
 		return query.getResultList();
 	}
-	public List<URSlink> findByUserIdCancelled(long id){
-		Query query = entityManager.createQuery("SELECT urs FROM URSlink urs JOIN urs.user u JOIN urs.reservation r JOIN urs.screening s WHERE u.id=:id AND r.cancelled=true");
-		query.setParameter("id", id);
+	
+	public List<URSlink> findCancelledByUserId(long userId){
+		Query query = entityManager.createQuery("SELECT urs FROM URSlink urs JOIN urs.user u JOIN urs.reservation r JOIN urs.screening s WHERE u.id=:userId AND r.cancelled=true");
+		query.setParameter("userId", userId);
 		return query.getResultList();
 	}
 }

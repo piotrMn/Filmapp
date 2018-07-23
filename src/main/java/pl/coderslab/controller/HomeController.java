@@ -55,7 +55,7 @@ public class HomeController {
 	ScreeningDao screeningDao;
 
 	@GetMapping("")
-	public String home(Model model, HttpServletRequest request) {
+	public String doGet(Model model, HttpServletRequest request) {
 		HttpSession session = request.getSession();
 		session.setMaxInactiveInterval(600);
 		session.removeAttribute("screeningtobook");
@@ -74,37 +74,32 @@ public class HomeController {
 		// Sprawdzenie, czy jest zalogowany użytkownik
 		Object loggedUsername = session.getAttribute("loggedUsername");
 		if (loggedUsername != null) {
-			User loggedUser = userDao.findByUsername(loggedUsername.toString());
+			User loggedUser = userDao.findUserByUsername(loggedUsername.toString());
 			if (loggedUser != null) {
 				model.addAttribute("username", loggedUser.getUsername());
-				List<URSlink> upcoming = ursDao.findByUserIdUpcoming(loggedUser.getId());
+				List<URSlink> upcoming = ursDao.findUpcomingByUserId(loggedUser.getId());
 				model.addAttribute("upcoming", upcoming);
-				List<URSlink> past = ursDao.findByUserIdPast(loggedUser.getId());
+				List<URSlink> past = ursDao.findPastByUserId(loggedUser.getId());
 				model.addAttribute("past", past);
-				List<URSlink> cancelled = ursDao.findByUserIdCancelled(loggedUser.getId());
+				List<URSlink> cancelled = ursDao.findCancelledByUserId(loggedUser.getId());
 				model.addAttribute("cancelled", cancelled);
-
 			}
 		}
 		// Sprawdzenie, czy są wyniki wyszukiwania
 		String searchresultsString = (String) session.getAttribute("searchresults");
-
 		if (searchresultsString != null && !searchresultsString.equals("")
 				&& !searchresultsString.equals("noresults")) {
 			String[] screeningIdsRaw = searchresultsString.split(":");
 			List<Screening> searchresults = new ArrayList<>();
-			for (int i = 0; i < screeningIdsRaw.length; i++) {
-				long id = 0;
-				try {
-					id = Long.parseLong(screeningIdsRaw[i]);
-				} catch (NumberFormatException e) {
-					return "redirect:/";
-				}
-				Screening scr = screeningDao.findById(id);
-				searchresults.add(scr);
-				model.addAttribute("searchresults", searchresults);
-			}
 
+			for (int idArrayIndex = 0; idArrayIndex < screeningIdsRaw.length; idArrayIndex++) {
+				long screeningId = Long.parseLong(screeningIdsRaw[idArrayIndex]);
+				Screening thisScreening = screeningDao.findScreeningById(screeningId);
+				if (thisScreening != null) {
+					searchresults.add(thisScreening);
+				}
+			}
+			model.addAttribute("searchresults", searchresults);
 		}
 		if (searchresultsString != null && !searchresultsString.equals("") && searchresultsString.equals("noresults")) {
 			model.addAttribute("searchresults", "emptylist");
@@ -131,10 +126,8 @@ public class HomeController {
 			}
 			return "redirect:/";
 		}
-		String title = searchQuery.getTitle();
-		String titleTrimmed = title.trim();
-		String cinema = searchQuery.getCinema();
-		String cinemaTrimmed = cinema.trim();
+		String filmTitleTrimmed = searchQuery.getFilmTitle().trim();
+		String cinemaNameTrimmed = searchQuery.getCinemaName().trim();
 		String date = searchQuery.getDate();
 		Timestamp timestampFrom = null;
 		Timestamp timestampTo = null;
@@ -145,44 +138,48 @@ public class HomeController {
 		}
 		List<Screening> searchresults = new ArrayList<Screening>();
 		// tytuł i data
-		if ((cinemaTrimmed.equals("") || cinemaTrimmed == null) && !(titleTrimmed.equals("") || titleTrimmed == null)
-				&& !(date.equals("") || date == null)) {
-			searchresults = screeningDao.findByTitleDate(titleTrimmed, timestampFrom, timestampTo);
+		if ((cinemaNameTrimmed.equals("") || cinemaNameTrimmed == null)
+				&& !(filmTitleTrimmed.equals("") || filmTitleTrimmed == null) && !(date.equals("") || date == null)) {
+			searchresults = screeningDao.findScreeningByFilmTitleAndTimestamps(filmTitleTrimmed, timestampFrom,
+					timestampTo);
 		}
 		// kino i data
-		if (!(cinemaTrimmed.equals("") || cinemaTrimmed == null) && (titleTrimmed.equals("") || titleTrimmed == null)
-				&& !(date.equals("") || date == null)) {
-			searchresults = screeningDao.findByCinemaDate(cinemaTrimmed, timestampFrom, timestampTo);
+		if (!(cinemaNameTrimmed.equals("") || cinemaNameTrimmed == null)
+				&& (filmTitleTrimmed.equals("") || filmTitleTrimmed == null) && !(date.equals("") || date == null)) {
+			searchresults = screeningDao.findScreeningByCinemaNameAndTimestamps(cinemaNameTrimmed, timestampFrom,
+					timestampTo);
 		}
 		// kino i tytuł
-		if (!(cinemaTrimmed.equals("") || cinemaTrimmed == null) && !(titleTrimmed.equals("") || titleTrimmed == null)
-				&& (date.equals("") || date == null)) {
-			searchresults = screeningDao.findByTitleCinemaUpcoming(titleTrimmed, cinemaTrimmed);
+		if (!(cinemaNameTrimmed.equals("") || cinemaNameTrimmed == null)
+				&& !(filmTitleTrimmed.equals("") || filmTitleTrimmed == null) && (date.equals("") || date == null)) {
+			searchresults = screeningDao.findUpcomingScreeningsByFilmTitleAndCinemaName(filmTitleTrimmed,
+					cinemaNameTrimmed);
 		}
 		// kino, tytuł, data
-		if (!(cinemaTrimmed.equals("") || cinemaTrimmed == null) && (!(titleTrimmed.equals("")) || titleTrimmed == null)
-				&& !(date.equals("") || date == null)) {
-			searchresults = screeningDao.findByTitleCinemaDate(titleTrimmed, cinemaTrimmed, timestampFrom, timestampTo);
+		if (!(cinemaNameTrimmed.equals("") || cinemaNameTrimmed == null)
+				&& (!(filmTitleTrimmed.equals("")) || filmTitleTrimmed == null) && !(date.equals("") || date == null)) {
+			searchresults = screeningDao.findScreeningByFilmTitleAndCinemaNameAndTimestamps(filmTitleTrimmed,
+					cinemaNameTrimmed, timestampFrom, timestampTo);
 		}
 		// nic
-		if ((cinemaTrimmed.equals("") || cinemaTrimmed == null) && (titleTrimmed.equals("") || titleTrimmed == null)
-				&& (date.equals("") || date == null)) {
-			searchresults = screeningDao.findUpcoming();
+		if ((cinemaNameTrimmed.equals("") || cinemaNameTrimmed == null)
+				&& (filmTitleTrimmed.equals("") || filmTitleTrimmed == null) && (date.equals("") || date == null)) {
+			searchresults = screeningDao.findUpcomingScreenings();
 		}
 		// tylko data
-		if ((cinemaTrimmed.equals("") || cinemaTrimmed == null) && (titleTrimmed.equals("") || titleTrimmed == null)
-				&& !(date.equals("") || date == null)) {
-			searchresults = screeningDao.findByDate(timestampFrom, timestampTo);
+		if ((cinemaNameTrimmed.equals("") || cinemaNameTrimmed == null)
+				&& (filmTitleTrimmed.equals("") || filmTitleTrimmed == null) && !(date.equals("") || date == null)) {
+			searchresults = screeningDao.findScreeningsByTimestamps(timestampFrom, timestampTo);
 		}
 		// tylko tytuł
-		if ((cinemaTrimmed.equals("") || cinemaTrimmed == null) && !(titleTrimmed.equals("") || titleTrimmed == null)
-				&& (date.equals("") || date == null)) {
-			searchresults = screeningDao.findByTitleUpcoming(titleTrimmed);
+		if ((cinemaNameTrimmed.equals("") || cinemaNameTrimmed == null)
+				&& !(filmTitleTrimmed.equals("") || filmTitleTrimmed == null) && (date.equals("") || date == null)) {
+			searchresults = screeningDao.findUpcomingScreeningsByFilmTitle(filmTitleTrimmed);
 		}
-		//tylko kino
-		if (!(cinemaTrimmed.equals("") || cinemaTrimmed == null) && (titleTrimmed.equals("") || titleTrimmed == null)
-				&& (date.equals("") || date == null)) {
-			searchresults = screeningDao.findByCinemaUpcoming(cinemaTrimmed);
+		// tylko kino
+		if (!(cinemaNameTrimmed.equals("") || cinemaNameTrimmed == null)
+				&& (filmTitleTrimmed.equals("") || filmTitleTrimmed == null) && (date.equals("") || date == null)) {
+			searchresults = screeningDao.findUpcomingScreeningsByCinemaName(cinemaNameTrimmed);
 		}
 		// zapisanie id wyszukanych seansów w stringu i dodanie do sesji
 		if (searchresults.size() > 0) {
@@ -195,17 +192,16 @@ public class HomeController {
 		} else {
 			session.setAttribute("searchresults", "noresults");
 		}
-
 		return "redirect:/";
 	}
 
 	@ModelAttribute("cinemas")
 	public List<Cinema> addCinemas() {
-		return cinemaDao.getAll();
+		return cinemaDao.findAllCinemas();
 	}
 
 	@ModelAttribute("films")
 	public List<Film> addFilms() {
-		return filmDao.getAll();
+		return filmDao.findAllFilms();
 	}
 }

@@ -19,7 +19,7 @@ public class NoSuchUserValidator implements ConstraintValidator<NoSuchUser, Stri
 	}
 
 	public boolean isValid(String username, ConstraintValidatorContext context) {
-		User userToFind = userDao.findByUsername(username);
+		User userToFind = userDao.findUserByUsername(username);
 		if(userToFind == null) {
 			return false;
 		}

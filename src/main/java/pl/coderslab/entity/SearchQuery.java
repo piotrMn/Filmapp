@@ -10,36 +10,35 @@ import pl.coderslab.validator.NotDate;
 import pl.coderslab.validator.PastDate;
 
 @Entity
-@Table(name="searchquery")
+@Table(name = "searchquery")
 public class SearchQuery {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
-	
-	String title;
-	
-	String cinema;
-	
+
+	String filmTitle;
+
+	String cinemaName;
+
 	@PastDate()
 	@NotDate()
 	String date;
-	
 
-	public String getTitle() {
-		return title;
+	public String getFilmTitle() {
+		return filmTitle;
 	}
 
-	public void setTitle(String title) {
-		this.title = title;
-	}
-	
-	public String getCinema() {
-		return cinema;
+	public void setFilmTitle(String filmTitle) {
+		this.filmTitle = filmTitle;
 	}
 
-	public void setCinema(String cinema) {
-		this.cinema = cinema;
+	public String getCinemaName() {
+		return cinemaName;
+	}
+
+	public void setCinemaName(String cinemaName) {
+		this.cinemaName = cinemaName;
 	}
 
 	public String getDate() {

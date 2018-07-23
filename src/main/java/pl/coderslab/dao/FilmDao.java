@@ -23,11 +23,13 @@ public class FilmDao {
 	public void save(Film entity) {
 		entityManager.persist(entity);
 	}
+
 	public void update(Film entity) {
 		entityManager.merge(entity);
 	}
-	public Film findByTitle(String title) {
-		Film theFilm;
+
+	public Film findFilmByTitle(String title) {
+		Film theFilm = null;
 		Query query = entityManager.createQuery("SELECT f FROM Film f WHERE f.title=:title");
 		query.setParameter("title", title);
 		try {
@@ -37,27 +39,27 @@ public class FilmDao {
 		}
 		return theFilm;
 	}
-	public Film findById(long id) {
-		Film theFilm;
+
+	public Film findFilmById(long id) {
+		Film theFilm = null;
 		Query query = entityManager.createQuery("SELECT f FROM Film f WHERE f.id=:id");
 		query.setParameter("id", id);
 		try {
 			theFilm = (Film) query.getSingleResult();
 		} catch (NoResultException e) {
 			theFilm = null;
-		} catch (NonUniqueResultException f) {
-			theFilm = null;
 		}
 		return theFilm;
 	}
-	public List<Film> getAll() {
+
+	public List<Film> findAllFilms() {
 		Query query = entityManager.createQuery("SELECT f FROM Film f");
 		return query.getResultList();
 	}
-	public List<String> getAllTitles(){
+
+	public List<String> getAllTitles() {
 		Query query = entityManager.createQuery("SELECT f.title FROM Film f");
 		return query.getResultList();
 	}
-	
 
 }

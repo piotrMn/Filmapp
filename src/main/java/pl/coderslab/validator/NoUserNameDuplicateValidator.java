@@ -20,7 +20,7 @@ public class NoUserNameDuplicateValidator implements ConstraintValidator<NoUserN
 	}
 
 	public boolean isValid(String value, ConstraintValidatorContext context) {
-		List<User> users = this.userDao.getAll();
+		List<User> users = this.userDao.findAllUsers();
 		for(User user : users) {
 			if(user.getUsername().equals(value)) {
 				return false;

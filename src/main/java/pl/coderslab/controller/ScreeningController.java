@@ -31,11 +31,11 @@ public class ScreeningController {
 	@ResponseBody
 	public String addScreeningLegnica() {
 		// Kino Lalka
-		Cinema cin1 = cinemaDao.findByName("Lalka");
+		Cinema cin1 = cinemaDao.findCinemaByName("Lalka");
 		LocalDateTime ldt1 = LocalDateTime.of(2018, 6, 20, 13, 30);
 		for (int i = 0; i < 42; i++) {
 			Screening scr = new Screening();
-			scr.setFilm(filmDao.findById(1L));
+			scr.setFilm(filmDao.findFilmById(1L));
 			scr.setCinema(cin1);
 			Timestamp ts = Timestamp.valueOf(ldt1.plusDays(i));
 			scr.setTimestamp(ts);
@@ -45,7 +45,7 @@ public class ScreeningController {
 		LocalDateTime ldt2 = LocalDateTime.of(2018, 6, 20, 16, 0);
 		for (int i = 0; i < 42; i++) {
 			Screening scr = new Screening();
-			scr.setFilm(filmDao.findById(2L));
+			scr.setFilm(filmDao.findFilmById(2L));
 			scr.setCinema(cin1);
 			Timestamp ts = Timestamp.valueOf(ldt2.plusDays(i));
 			scr.setTimestamp(ts);
@@ -55,7 +55,7 @@ public class ScreeningController {
 		LocalDateTime ldt3 = LocalDateTime.of(2018, 6, 20, 18, 0);
 		for (int i = 0; i < 42; i++) {
 			Screening scr = new Screening();
-			scr.setFilm(filmDao.findById(3L));
+			scr.setFilm(filmDao.findFilmById(3L));
 			scr.setCinema(cin1);
 			Timestamp ts = Timestamp.valueOf(ldt3.plusDays(i));
 			scr.setTimestamp(ts);
@@ -65,7 +65,7 @@ public class ScreeningController {
 		LocalDateTime ldt4 = LocalDateTime.of(2018, 6, 20, 20, 0);
 		for (int i = 0; i < 42; i++) {
 			Screening scr = new Screening();
-			scr.setFilm(filmDao.findById(5L));
+			scr.setFilm(filmDao.findFilmById(5L));
 			scr.setCinema(cin1);
 			Timestamp ts = Timestamp.valueOf(ldt4.plusDays(i));
 			scr.setTimestamp(ts);
@@ -73,11 +73,11 @@ public class ScreeningController {
 			scrDao.save(scr);
 		}
 		// Kino Odeon
-		Cinema cin2 = cinemaDao.findByName("Odeon");
+		Cinema cin2 = cinemaDao.findCinemaByName("Odeon");
 		LocalDateTime ldt5 = LocalDateTime.of(2018, 6, 20, 17, 0);
 		for (int i = 0; i < 42; i++) {
 			Screening scr = new Screening();
-			scr.setFilm(filmDao.findById(1L));
+			scr.setFilm(filmDao.findFilmById(1L));
 			scr.setCinema(cin2);
 			Timestamp ts = Timestamp.valueOf(ldt5.plusDays(i));
 			scr.setTimestamp(ts);
@@ -87,7 +87,7 @@ public class ScreeningController {
 		LocalDateTime ldt6 = LocalDateTime.of(2018, 6, 20, 18, 30);
 		for (int i = 0; i < 42; i++) {
 			Screening scr = new Screening();
-			scr.setFilm(filmDao.findById(3L));
+			scr.setFilm(filmDao.findFilmById(3L));
 			scr.setCinema(cin2);
 			Timestamp ts = Timestamp.valueOf(ldt6.plusDays(i));
 			scr.setTimestamp(ts);
@@ -97,7 +97,7 @@ public class ScreeningController {
 		LocalDateTime ldt7 = LocalDateTime.of(2018, 6, 20, 20, 0);
 		for (int i = 0; i < 42; i++) {
 			Screening scr = new Screening();
-			scr.setFilm(filmDao.findById(4L));
+			scr.setFilm(filmDao.findFilmById(4L));
 			scr.setCinema(cin2);
 			Timestamp ts = Timestamp.valueOf(ldt7.plusDays(i));
 			scr.setTimestamp(ts);
@@ -107,7 +107,7 @@ public class ScreeningController {
 		LocalDateTime ldt8 = LocalDateTime.of(2018, 6, 20, 21, 0);
 		for (int i = 0; i < 42; i++) {
 			Screening scr = new Screening();
-			scr.setFilm(filmDao.findById(5L));
+			scr.setFilm(filmDao.findFilmById(5L));
 			scr.setCinema(cin2);
 			Timestamp ts = Timestamp.valueOf(ldt8.plusDays(i));
 			scr.setTimestamp(ts);
@@ -115,11 +115,11 @@ public class ScreeningController {
 			scrDao.save(scr);
 		}
 		// Kino Gigant
-		Cinema cin3 = cinemaDao.findByName("Gigant");
+		Cinema cin3 = cinemaDao.findCinemaByName("Gigant");
 		LocalDateTime ldt9 = LocalDateTime.of(2018, 6, 20, 13, 30);
 		for (int i = 0; i < 42; i++) {
 			Screening scr = new Screening();
-			scr.setFilm(filmDao.findById(2L));
+			scr.setFilm(filmDao.findFilmById(2L));
 			scr.setCinema(cin3);
 			Timestamp ts = Timestamp.valueOf(ldt9.plusDays(i));
 			scr.setTimestamp(ts);
@@ -129,7 +129,7 @@ public class ScreeningController {
 		LocalDateTime ldt10 = LocalDateTime.of(2018, 6, 20, 16, 0);
 		for (int i = 0; i < 42; i++) {
 			Screening scr = new Screening();
-			scr.setFilm(filmDao.findById(3L));
+			scr.setFilm(filmDao.findFilmById(3L));
 			scr.setCinema(cin3);
 			Timestamp ts = Timestamp.valueOf(ldt10.plusDays(i));
 			scr.setTimestamp(ts);
@@ -139,7 +139,7 @@ public class ScreeningController {
 		LocalDateTime ldt11 = LocalDateTime.of(2018, 6, 20, 18, 0);
 		for (int i = 0; i < 42; i++) {
 			Screening scr = new Screening();
-			scr.setFilm(filmDao.findById(4L));
+			scr.setFilm(filmDao.findFilmById(4L));
 			scr.setCinema(cin3);
 			Timestamp ts = Timestamp.valueOf(ldt11.plusDays(i));
 			scr.setTimestamp(ts);
@@ -149,7 +149,7 @@ public class ScreeningController {
 		LocalDateTime ldt12 = LocalDateTime.of(2018, 6, 20, 20, 30);
 		for (int i = 0; i < 42; i++) {
 			Screening scr = new Screening();
-			scr.setFilm(filmDao.findById(5L));
+			scr.setFilm(filmDao.findFilmById(5L));
 			scr.setCinema(cin3);
 			Timestamp ts = Timestamp.valueOf(ldt12.plusDays(i));
 			scr.setTimestamp(ts);

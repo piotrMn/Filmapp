@@ -65,7 +65,7 @@
 		<div id="film-search">
 			<form:form method="post" modelAttribute="searchQuery" action="../../Filmapp/">
 				<div class="search-field">
-					<form:select path="cinema" class="select" id="film-select">
+					<form:select path="cinemaName" class="select" id="film-select">
 						<form:option value="" label="Wybierz kino"/>
 						<c:forEach items="${cinemas }" var="cinema">
 							<form:option value="${cinema.getName() }" cssClass="dropdown-item"/>
@@ -73,7 +73,7 @@
 					</form:select>
 				</div>
 				<div class="search-field">
-					<form:select path="title" class="select" id="title-select">
+					<form:select path="filmTitle" class="select" id="title-select">
 						<form:option value="" label="Wybierz film"/>
 						<c:forEach items="${films }" var="film">
 							<form:option value="${film.getTitle() }"/>
@@ -180,40 +180,40 @@
 							</tr>
 						</thead>
 						<%int i = 1; %>
-						<c:forEach items="${searchresults}" var="res">
+						<c:forEach items="${searchresults}" var="result">
 							<tr class="result-row" data-row="<%=i %>">
 								<td>
-									<c:out value="${res.getTimestampFormatted() }"></c:out>
+									<c:out value="${result.getTimestampFormatted() }"></c:out>
 								</td>
 								<td>
-									<c:out value="${res.getFilm().getTitle() }" />
+									<c:out value="${result.getFilm().getTitle() }" />
 								</td>
 								<td>
-									<c:out value="${res.getCinema().getName() }" />
+									<c:out value="${result.getCinema().getName() }" />
 								</td>
 								<td>
-									<c:if test="${res.getCinema().getCapacity() - res.getBooked() == 0 }">
+									<c:if test="${result.getCinema().getCapacity() - result.getBooked() == 0 }">
 										Brak dostępnych biletów.
 									</c:if>
-									<c:if test="${res.getCinema().getCapacity() - res.getBooked() > 0 }">
-										<c:set var="available" value="${res.getCinema().getCapacity() - res.getBooked() }" />
-										<c:out value="${available }" />/<c:out value="${res.getCinema().getCapacity() }" />
+									<c:if test="${result.getCinema().getCapacity() - result.getBooked() > 0 }">
+										<c:set var="available" value="${result.getCinema().getCapacity() - result.getBooked() }" />
+										<c:out value="${available }" />/<c:out value="${result.getCinema().getCapacity() }" />
 									</c:if>
 								</td>
 								<td>
-									<c:set value="${res.getPrice()}" var="price" /> <fmt:formatNumber value="${price}" type="number" minFractionDigits="2" maxFractionDigits="2" />
+									<c:set value="${result.getPrice()}" var="price" /> <fmt:formatNumber value="${price}" type="number" minFractionDigits="2" maxFractionDigits="2" />
 								</td>
 								<td>
 									<c:set var="contains" value="false" />
 									<c:forEach var="upc" items="${upcoming}">
-									  	<c:if test="${upc.getScreening().getId() eq res.getId()}">
+									  	<c:if test="${upc.getScreening().getId() eq result.getId()}">
 											<c:set var="contains" value="true" />
 										</c:if>
 									</c:forEach>
 									<c:if test="${not empty username && contains eq false }">
 										<c:url value="http://localhost:8080/Filmapp/reserve/form"
 											var="reserveUrl">
-											<c:param name="screeningId" value="${res.getId()}" />
+											<c:param name="screeningId" value="${result.getId()}" />
 											<c:param name="username" value="${username}" />]
 										</c:url>
 										<a href="${reserveUrl }" class="btn-md">Rezerwuj</a>
@@ -223,7 +223,7 @@
 									</c:if>
 									<c:if test="${empty username }">
 										<c:url value="http://localhost:8080/Filmapp/user/signup" var="reserveUrl">
-											<c:param name="screeningtobook" value="${res.getId() }"/>
+											<c:param name="screeningtobook" value="${result.getId() }"/>
 										</c:url>
 										<a href="${reserveUrl }" class="btn-md">Rezerwuj</a>
 									</c:if>

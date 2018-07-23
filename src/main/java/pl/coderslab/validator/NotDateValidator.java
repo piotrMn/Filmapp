@@ -23,20 +23,19 @@ public class NotDateValidator implements ConstraintValidator<NotDate, String> {
 		if(matcher.matches()) {
 			String[] dateSplit = dateString.split("-");
 			int day = Integer.parseInt(dateSplit[0]);
-			if(day > 31 || day == 0) {
+			if(day > 31 || day < 1) {
 				return false;
 			}
 			int month = Integer.parseInt(dateSplit[1]);
-			if(month > 12 || month == 0) {
+			if(month > 12 || month < 1) {
 				return false;
 			}
 			int year = Integer.parseInt(dateSplit[2]);
-			if(year < 2000 || year > 2050) {
+			if(year < 2000 || year > 2100) {
 				return false;
 			}
 			return true;
 		}
 		return false;
 	}
-
 }

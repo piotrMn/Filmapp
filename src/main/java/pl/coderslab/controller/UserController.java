@@ -73,8 +73,8 @@ public class UserController {
 				} catch (NumberFormatException e) {
 					return "redirect:/";
 				}
-				Screening screening = screeningDao.findById(thisId);
-				List<Reservation> reservations = reservationDao.getByScreeningId(thisId);
+				Screening screening = screeningDao.findScreeningById(thisId);
+				List<Reservation> reservations = reservationDao.findReservationByScreeningId(thisId);
 				String seatCodes = "";
 				for(Reservation res : reservations) {
 					seatCodes += res.getSeatCodes();
@@ -105,7 +105,7 @@ public class UserController {
 			return "loginForm";
 		}
 		HttpSession session = request.getSession();
-		User userToMatch = userDao.findByUsername(user.getUsername());
+		User userToMatch = userDao.findUserByUsername(user.getUsername());
 		if (BCrypt.checkpw(user.getPassword(), userToMatch.getPassword())) {
 			session.setAttribute("loggedUsername", userToMatch.getUsername());
 		}
@@ -118,8 +118,8 @@ public class UserController {
 			} catch (NumberFormatException e) {
 				return "redirect:/";
 			}
-			Screening screening = screeningDao.findById(thisId);
-			List<Reservation> reservations = reservationDao.getByScreeningId(thisId);
+			Screening screening = screeningDao.findScreeningById(thisId);
+			List<Reservation> reservations = reservationDao.findReservationByScreeningId(thisId);
 			String seatCodes = "";
 			for(Reservation res : reservations) {
 				seatCodes += res.getSeatCodes();
@@ -144,7 +144,7 @@ public class UserController {
 
 	@GetMapping("/delete")
 	public String delete(@RequestParam String username, Model model) {
-		User userToDelete = userDao.findByUsername(username);
+		User userToDelete = userDao.findUserByUsername(username);
 		model.addAttribute("username", userToDelete.getUsername());
 		return "deleteForm";
 	}
@@ -154,7 +154,7 @@ public class UserController {
 		HttpSession session = request.getSession();
 		try {
 			long userIdl = Long.parseLong(userid);
-			User userToDelete = userDao.findById(userIdl);
+			User userToDelete = userDao.findUserById(userIdl);
 			if (BCrypt.checkpw(password, userToDelete.getPassword())) {
 				userDao.delete(userToDelete);
 				session.removeAttribute("loggedUsername");

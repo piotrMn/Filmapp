@@ -30,9 +30,9 @@ public class ReservationDao {
 		entityManager.remove(entityManager.contains(entity) ? entity : entityManager.merge(entity));
 	}
 	
-	public List<Reservation> getByScreeningId(long id){
-		Query query = entityManager.createQuery("SELECT r FROM URSlink urs JOIN urs.reservation r JOIN urs.screening s WHERE s.id=:id");
-		query.setParameter("id", id);
+	public List<Reservation> findReservationByScreeningId(long screeningId){
+		Query query = entityManager.createQuery("SELECT r FROM URSlink urs JOIN urs.reservation r JOIN urs.screening s WHERE s.id=:screeningId");
+		query.setParameter("screeningId", screeningId);
 		return query.getResultList();
 	}
 

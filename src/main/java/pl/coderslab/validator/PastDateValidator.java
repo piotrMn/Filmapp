@@ -25,8 +25,7 @@ public class PastDateValidator implements ConstraintValidator<PastDate, String> 
 		} catch (ParseException e) {
 			return false;
 		}
-		Calendar cal = Calendar.getInstance();
-		Date now = cal.getTime();
+		Date now = Calendar.getInstance().getTime();
 		if(thisDate.before(now)) {
 			return false;
 		}
